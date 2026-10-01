@@ -1,0 +1,148 @@
+#!/usr/bin/env python3
+"""git-ssh-paramiko — a GIT_SSH replacement for environments without an ssh binary.
+
+Git invokes $GIT_SSH exactly like the `ssh` command line:
+
+    GIT_SSH=/path/to/this git push git@github.com:user/repo.git main
+
+This wrapper parses a practical subset of ssh arguments, connects with
+paramiko using ~/.ssh/id_ed25519, execs the remote command and pipes
+stdin/stdout/stderr bidirectionally (git's pack protocol is full-duplex).
+"""
+
+import os
+import sys
+import threading
+from pathlib import Path
+
+import paramiko
+
+
+def parse_args(argv):
+    """Return (host, port, username, command) from ssh-style arguments."""
+    host = port = None
+    username = None
+    command = []
+    i = 0
+    while i < len(argv):
+        a = argv[i]
+        if a == "-p":
+            i += 1
+            port = int(argv[i])
+        elif a == "-l":
+            i += 1
+            username = argv[i]
+        elif a == "-i":
+            i += 1  # identity file: ignore, we always use ~/.ssh/id_ed25519
+        elif a == "-o":
+            i += 1  # options: ignore (StrictHostKeyChecking handled below)
+        elif a in ("-T", "-q", "-v", "-A", "-C"):
+            pass
+        elif a.startswith("-") and len(a) > 2:
+            # combined flags or -p<port> style
+            if a.startswith("-p") and a[2:].isdigit():
+                port = int(a[2:])
+            # else ignore
+        elif host is None:
+            host = a
+        else:
+            command.append(a)
+        i += 1
+
+    if not host:
+        raise SystemExit("git-ssh-paramiko: no host given")
+    if not command:
+        raise SystemExit("git-ssh-paramiko: no command given")
+
+    if username is None and "@" in host:
+        username, host = host.split("@", 1)
+    username = username or os.environ.get("GIT_SSH_USER", "git")
+    port = port or 22
+    return host, port, username, command
+
+
+def pump(src, dst, done):
+    try:
+        while True:
+            data = src.read(32768)
+            if not data:
+                break
+            dst.write(data)
+            dst.flush()
+    except Exception:
+        pass
+    finally:
+        try:
+            if dst in (sys.stdout.buffer, sys.stderr.buffer):
+                dst.flush()
+            else:
+                dst.shutdown()
+        except Exception:
+            pass
+        done.set()
+
+
+def main() -> int:
+    host, port, username, command = parse_args(sys.argv[1:])
+    key_file = Path.home() / ".ssh" / "id_ed25519"
+
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+    try:
+        pkey = paramiko.Ed25519Key.from_private_key_file(str(key_file))
+        client.connect(
+            hostname=host,
+            port=port,
+            username=username,
+            pkey=pkey,
+            look_for_keys=False,
+            allow_agent=False,
+            timeout=30,
+            banner_timeout=30,
+        )
+    except paramiko.ssh_exception.AuthenticationException:
+        sys.stderr.write(
+            "git-ssh-paramiko: authentication failed — add your public key "
+            f"({key_file}.pub) at https://github.com/settings/ssh/new\n"
+        )
+        return 255
+    except Exception as e:  # noqa: BLE001
+        sys.stderr.write(f"git-ssh-paramiko: connection failed: {e}\n")
+        return 255
+
+    try:
+        transport = client.get_transport()
+        transport.set_keepalive(30)
+        channel = transport.open_session()
+        channel.exec_command(" ".join(command))
+
+        done_out = threading.Event()
+        done_err = threading.Event()
+        done_in = threading.Event()
+
+        threads = [
+            threading.Thread(target=pump, args=(channel, sys.stdout.buffer, done_out)),
+            threading.Thread(target=pump, args=(channel, sys.stderr.buffer, done_err)),
+            threading.Thread(target=pump, args=(sys.stdin.buffer, channel, done_in)),
+        ]
+        for t in threads:
+            t.daemon = True
+            t.start()
+
+        # Wait for the remote command to finish (stdout pump ends on EOF)
+        while not (done_out.is_set() and done_err.is_set()):
+            if channel.exit_status_ready() and done_out.is_set() and done_err.is_set():
+                break
+            channel.recv_ready()
+            done_out.wait(0.1)
+            done_err.wait(0.1)
+
+        status = channel.recv_exit_status()
+        return status
+    finally:
+        client.close()
+
+
+if __name__ == "__main__":
+    sys.exit(main())
