@@ -8,14 +8,22 @@ Git invokes $GIT_SSH exactly like the `ssh` command line:
 This wrapper parses a practical subset of ssh arguments, connects with
 paramiko using ~/.ssh/id_ed25519, execs the remote command and pipes
 stdin/stdout/stderr bidirectionally (git's pack protocol is full-duplex).
+
+IMPORTANT: pumps use RAW reads (os.read / channel.recv) which return as soon
+as *any* data is available. BufferedReader.read(n) / Channel.read(n) block
+until the FULL n bytes arrive, which deadlocks git's small protocol requests.
 """
 
 import os
 import sys
 import threading
+import time
 from pathlib import Path
 
 import paramiko
+
+# Max seconds to wait for the remote command to finish (big pushes allowed)
+REMOTE_TIMEOUT = 900
 
 
 def parse_args(argv):
@@ -35,14 +43,11 @@ def parse_args(argv):
         elif a == "-i":
             i += 1  # identity file: ignore, we always use ~/.ssh/id_ed25519
         elif a == "-o":
-            i += 1  # options: ignore (StrictHostKeyChecking handled below)
+            i += 1  # options: ignore (host keys auto-added below)
         elif a in ("-T", "-q", "-v", "-A", "-C"):
             pass
-        elif a.startswith("-") and len(a) > 2:
-            # combined flags or -p<port> style
-            if a.startswith("-p") and a[2:].isdigit():
-                port = int(a[2:])
-            # else ignore
+        elif a.startswith("-p") and a[2:].isdigit():
+            port = int(a[2:])
         elif host is None:
             host = a
         else:
@@ -61,22 +66,58 @@ def parse_args(argv):
     return host, port, username, command
 
 
-def pump(src, dst, done):
+def pump_stdout(channel, done):
+    """channel -> our stdout, using recv() which returns available data."""
     try:
         while True:
-            data = src.read(32768)
+            data = channel.recv(32768)
             if not data:
                 break
-            dst.write(data)
-            dst.flush()
+            sys.stdout.buffer.write(data)
+            sys.stdout.buffer.flush()
     except Exception:
         pass
     finally:
         try:
-            if dst in (sys.stdout.buffer, sys.stderr.buffer):
-                dst.flush()
-            else:
-                dst.shutdown()
+            sys.stdout.buffer.flush()
+        except Exception:
+            pass
+        done.set()
+
+
+def pump_stderr(channel, done):
+    """channel stderr -> our stderr."""
+    try:
+        while True:
+            data = channel.recv_stderr(32768)
+            if not data:
+                break
+            sys.stderr.buffer.write(data)
+            sys.stderr.buffer.flush()
+    except Exception:
+        pass
+    finally:
+        try:
+            sys.stderr.buffer.flush()
+        except Exception:
+            pass
+        done.set()
+
+
+def pump_stdin(channel, done):
+    """our stdin -> channel, using raw os.read() (returns any available data)."""
+    try:
+        fd = sys.stdin.fileno()
+        while True:
+            data = os.read(fd, 65536)
+            if not data:
+                break
+            channel.sendall(data)
+    except Exception:
+        pass
+    finally:
+        try:
+            channel.shutdown_write()  # signal EOF to the remote command
         except Exception:
             pass
         done.set()
@@ -122,23 +163,28 @@ def main() -> int:
         done_in = threading.Event()
 
         threads = [
-            threading.Thread(target=pump, args=(channel, sys.stdout.buffer, done_out)),
-            threading.Thread(target=pump, args=(channel, sys.stderr.buffer, done_err)),
-            threading.Thread(target=pump, args=(sys.stdin.buffer, channel, done_in)),
+            threading.Thread(target=pump_stdout, args=(channel, done_out), daemon=True),
+            threading.Thread(target=pump_stderr, args=(channel, done_err), daemon=True),
+            threading.Thread(target=pump_stdin, args=(channel, done_in), daemon=True),
         ]
         for t in threads:
-            t.daemon = True
             t.start()
 
-        # Wait for the remote command to finish (stdout pump ends on EOF)
-        while not (done_out.is_set() and done_err.is_set()):
-            if channel.exit_status_ready() and done_out.is_set() and done_err.is_set():
-                break
-            channel.recv_ready()
-            done_out.wait(0.1)
-            done_err.wait(0.1)
+        # Wait for the remote command to exit (bounded)
+        deadline = time.monotonic() + REMOTE_TIMEOUT
+        while not channel.exit_status_ready():
+            if time.monotonic() > deadline:
+                sys.stderr.write("git-ssh-paramiko: remote command timed out\n")
+                channel.close()
+                return 255
+            time.sleep(0.05)
 
         status = channel.recv_exit_status()
+
+        # Drain any remaining output before closing (short grace period)
+        done_out.wait(10)
+        done_err.wait(10)
+        channel.close()
         return status
     finally:
         client.close()
