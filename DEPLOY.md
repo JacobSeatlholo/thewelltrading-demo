@@ -2,7 +2,8 @@
 
 This site is a **Next.js 16 static export**. `next build` produces plain HTML/CSS/JS
 in `out/`, and GitHub Actions publishes it to **GitHub Pages** automatically on
-every push to `main`.
+every push to `main`. You can also host it on **Vercel** with zero configuration
+(§2) — both platforms redeploy on every push.
 
 ```
 Local project ──ssh──▶ GitHub repo ──Actions──▶ GitHub Pages (CDN)
@@ -45,7 +46,31 @@ Then enable Pages (one time only):
 
 ---
 
-## 2. Using the custom domain (thewelltrading.co.za) — recommended
+## 2. Deploying to Vercel (zero-config)
+
+Vercel detects the Next.js static export automatically — **no configuration
+needed**: default build command, no environment variables, no `vercel.json`.
+
+1. Go to <https://vercel.com/new> → import `JacobSeatlholo/thewelltrading-demo`
+2. Leave every setting at its default → click **Deploy** (~1 minute)
+3. Live at `https://<project-name>.vercel.app` — every push to `main` redeploys
+
+> ⚠️ **Do NOT** set `NEXT_PUBLIC_BASE_PATH` in Vercel's environment variables.
+> That variable is GitHub-Pages-only (project pages live under `/<repo>`,
+> Vercel serves at the root). Setting it on Vercel prefixes every asset URL
+> with a path that doesn't exist there and produces an empty-looking site.
+
+**Custom domain:** Project → Settings → Domains → add `thewelltrading.co.za`
+→ at the registrar point DNS per Vercel's instructions
+(`A` record `76.76.21.21` / `CNAME` `cname.vercel-dns.com`).
+
+**Note:** the GitHub Pages workflow still runs on every push. If you
+standardise on Vercel you can disable it (repo → Actions → *Deploy to GitHub
+Pages* → ⋯ → Disable workflow) or simply ignore it.
+
+---
+
+## 3. Using the custom domain (thewelltrading.co.za) — recommended
 
 The repo already contains `public/CNAME` → keeps your SEO and brand address.
 
@@ -76,7 +101,7 @@ at **https://thewelltrading.co.za**.
 
 ---
 
-## 3. Everyday workflow
+## 4. Everyday workflow
 
 ```bash
 # make your edits, then:
@@ -90,7 +115,7 @@ git push                 # → auto-deploys in ~1–2 minutes
 
 ---
 
-## 4. Where things live
+## 5. Where things live
 
 | What                        | Where                                  |
 | --------------------------- | -------------------------------------- |
@@ -104,12 +129,13 @@ git push                 # → auto-deploys in ~1–2 minutes
 
 ---
 
-## 5. Troubleshooting
+## 6. Troubleshooting
 
 | Problem                                  | Fix                                                                 |
 | ---------------------------------------- | ------------------------------------------------------------------- |
 | `Permission denied (publickey)` on push  | Key not added / wrong key. Re-run step 1–3 of the setup script.     |
 | Actions workflow fails on install        | Delete `bun.lock`, commit, push (regenerates lockfile).             |
 | Site 404s on GitHub Pages                | Check `Settings → Pages → Source` is **GitHub Actions**, not branch.|
-| CSS/JS 404s under `/repo-name` path      | Set `NEXT_PUBLIC_BASE_PATH: /<repo>` in the workflow (see §2 note). |
+| CSS/JS 404s under `/repo-name` path      | Set `NEXT_PUBLIC_BASE_PATH: /<repo>` in the workflow (see §3 note). |
+| Vercel site looks empty / assets 404     | Remove `NEXT_PUBLIC_BASE_PATH` from Vercel env vars and redeploy.   |
 | Custom domain DNS check pending          | Wait for propagation, re-save the Pages domain.                     |
