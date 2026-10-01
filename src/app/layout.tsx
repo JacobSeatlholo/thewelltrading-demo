@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
+import { asset } from "@/lib/asset";
 import { Navbar } from "@/components/site/navbar";
 import { Footer } from "@/components/site/footer";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     "The Well Trading",
   ],
   authors: [{ name: site.fullName }],
-  icons: { icon: "/images/icon-192.png", apple: "/images/icon-192.png" },
+  icons: { icon: asset("/images/icon-192.png"), apple: asset("/images/icon-192.png") },
   openGraph: {
     title: `${site.fullName} — ${site.tagline}`,
     description: site.description,

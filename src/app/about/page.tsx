@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import Link from "next/link";
 import { ArrowRight, Eye, Quote, Target, Users } from "lucide-react";
 import { site, values } from "@/lib/site";
@@ -63,7 +64,7 @@ export default function AboutPage() {
             />
             <div className="relative overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_20px_60px_-30px_rgba(0,37,129,0.35)]">
               <Image
-                src="/images/about-truck.jpg"
+                src={asset("/images/about-truck.jpg")}
                 alt="The Well Trading branded service vehicle on site"
                 width={1536}
                 height={864}

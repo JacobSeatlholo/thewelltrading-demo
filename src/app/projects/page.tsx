@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import { BadgeCheck, HardHat, Sparkles } from "lucide-react";
 import { projectPhotos } from "@/lib/site";
 import { PageHero } from "@/components/site/page-hero";
@@ -67,7 +68,7 @@ export default function ProjectsPage() {
               <Reveal key={p.src} delay={(i % 4) * 0.05} className="break-inside-avoid">
                 <figure className="group relative overflow-hidden rounded-xl border border-slate-200 bg-paper-soft">
                   <Image
-                    src={p.src}
+                    src={asset(p.src)}
                     alt={p.alt}
                     width={800}
                     height={800}

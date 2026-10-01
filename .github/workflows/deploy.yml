@@ -27,13 +27,13 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      # Deploying to https://<user>.github.io/<repo>/ WITHOUT a custom domain?
-      # Uncomment the env block below so assets resolve under /<repo-name>:
-      # env:
-      #   NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
-
+      # Project-page deploy (https://<user>.github.io/<repo>/) — prefix all
+      # assets/links with /<repo-name>. When switching to the custom domain
+      # (thewelltrading.co.za): remove this env block and restore public/CNAME.
       - name: Build static site
         run: bun run build:static
+        env:
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
 
       - name: Ensure .nojekyll (skip Jekyll processing)
         run: touch out/.nojekyll

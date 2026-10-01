@@ -65,9 +65,14 @@ The repo already contains `public/CNAME` → keeps your SEO and brand address.
 DNS can take up to 24 h to propagate. Once GitHub verifies it, the site is served
 at **https://thewelltrading.co.za**.
 
-> Deploying to `username.github.io/<repo>` **without** the custom domain?
-> Remove `public/CNAME` and uncomment the `NEXT_PUBLIC_BASE_PATH` block in
-> `.github/workflows/deploy.yml` so assets resolve under `/repo-name`.
+> **Current demo setup** (`<user>.github.io/<repo>/`, no custom domain yet):
+> `public/CNAME` is removed and the `NEXT_PUBLIC_BASE_PATH` env block in
+> `.github/workflows/deploy.yml` is **enabled**, so assets resolve under
+> `/<repo-name>`. When you're ready for production on thewelltrading.co.za:
+>
+> 1. Re-add `public/CNAME` containing `thewelltrading.co.za`
+> 2. Remove the `NEXT_PUBLIC_BASE_PATH` env block from the workflow
+> 3. Add the custom domain in **Pages settings** and point the DNS (table above)
 
 ---
 

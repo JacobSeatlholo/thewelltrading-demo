@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import {
   ArrowRight,
   BadgeCheck,
@@ -94,7 +95,7 @@ export default function HomePage() {
               />
               <div className="relative overflow-hidden rounded-[2rem] border border-white/20 shadow-[0_30px_80px_-30px_rgba(0,10,40,0.8)]">
                 <Image
-                  src="/images/hero-install.jpg"
+                  src={asset("/images/hero-install.jpg")}
                   alt="Solar inverter, battery backup and distribution board installed by The Well Trading"
                   width={1332}
                   height={1776}
@@ -173,7 +174,7 @@ export default function HomePage() {
                 >
                   <div className="relative h-48 overflow-hidden">
                     <Image
-                      src={s.image!}
+                      src={asset(s.image!)}
                       alt={s.imageAlt ?? s.title}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
@@ -236,7 +237,7 @@ export default function HomePage() {
             />
             <div className="relative overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_20px_60px_-30px_rgba(0,37,129,0.35)]">
               <Image
-                src="/images/about-truck.jpg"
+                src={asset("/images/about-truck.jpg")}
                 alt="The Well Trading branded service vehicle"
                 width={1536}
                 height={864}
@@ -317,7 +318,7 @@ export default function HomePage() {
               <Reveal key={p.src} delay={i * 0.06}>
                 <div className="group relative aspect-4/3 overflow-hidden rounded-xl border border-slate-200 bg-paper-soft">
                   <Image
-                    src={p.src}
+                    src={asset(p.src)}
                     alt={p.alt}
                     fill
                     sizes="(max-width: 640px) 50vw, 33vw"

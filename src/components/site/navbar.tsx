@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, Phone, X, Zap } from "lucide-react";
@@ -65,7 +66,7 @@ export function Navbar() {
         <Link href="/" className="group flex items-center gap-3" aria-label="The Well Trading — home">
           <span className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-white transition-transform duration-300 group-hover:scale-105">
             <Image
-              src="/images/logo.png"
+              src={asset("/images/logo.png")}
               alt="The Well Trading logo"
               width={48}
               height={48}

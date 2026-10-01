@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import { Mail, MapPin, Phone, Zap } from "lucide-react";
 import { navLinks, services, site } from "@/lib/site";
 
@@ -16,7 +17,7 @@ export function Footer() {
             <div className="flex items-center gap-3">
               <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-white">
                 <Image
-                  src="/images/logo.png"
+                  src={asset("/images/logo.png")}
                   alt="The Well Trading logo"
                   width={48}
                   height={48}

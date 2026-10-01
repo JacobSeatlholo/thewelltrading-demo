@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { processSteps, services } from "@/lib/site";
@@ -46,7 +47,7 @@ export default function ServicesPage() {
                     {s.image ? (
                       <div className="relative min-h-56 lg:min-h-full">
                         <Image
-                          src={s.image}
+                          src={asset(s.image)}
                           alt={s.imageAlt ?? s.title}
                           fill
                           sizes="(max-width: 1024px) 100vw, 45vw"
