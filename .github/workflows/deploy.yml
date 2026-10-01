@@ -57,12 +57,7 @@ jobs:
           print(text)
           print('```')
           PYEOF
-          python3 -c "
-import pathlib, urllib.parse
-p = pathlib.Path('/tmp/next-build.log')
-t = p.read_text(errors='replace')[-800:] if p.exists() else 'log missing'
-print('::error title=next-build-tail::' + urllib.parse.quote(t, safe=''))
-"
+          python3 -c "import pathlib, urllib.parse; p = pathlib.Path('/tmp/next-build.log'); t = p.read_text(errors='replace')[-800:] if p.exists() else 'log missing'; print('::error title=next-build-tail::' + urllib.parse.quote(t, safe=''))"
 
       - name: Ensure .nojekyll (skip Jekyll processing)
         run: touch out/.nojekyll
