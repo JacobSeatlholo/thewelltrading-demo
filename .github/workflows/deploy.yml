@@ -23,6 +23,13 @@ jobs:
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -31,9 +38,31 @@ jobs:
       # assets/links with /<repo-name>. When switching to the custom domain
       # (thewelltrading.co.za): remove this env block and restore public/CNAME.
       - name: Build static site
-        run: bun run build:static
         env:
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+        run: |
+          set -o pipefail
+          bun run build:static 2>&1 | tee /tmp/next-build.log
+
+      # Logs are admin-only via API; surface the tail as a public annotation.
+      - name: Surface build error
+        if: failure()
+        run: |
+          python3 - << 'PYEOF' >> "$GITHUB_STEP_SUMMARY"
+          import pathlib
+          log = pathlib.Path('/tmp/next-build.log')
+          text = log.read_text(errors='replace')[-3000:] if log.exists() else 'log missing'
+          print('### next build tail')
+          print('```')
+          print(text)
+          print('```')
+          PYEOF
+          python3 -c "
+import pathlib, urllib.parse
+p = pathlib.Path('/tmp/next-build.log')
+t = p.read_text(errors='replace')[-800:] if p.exists() else 'log missing'
+print('::error title=next-build-tail::' + urllib.parse.quote(t, safe=''))
+"
 
       - name: Ensure .nojekyll (skip Jekyll processing)
         run: touch out/.nojekyll
