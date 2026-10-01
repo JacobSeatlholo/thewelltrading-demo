@@ -5,7 +5,48 @@ import { asset } from "@/lib/asset";
 import { Navbar } from "@/components/site/navbar";
 import { Footer } from "@/components/site/footer";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
-import { site } from "@/lib/site";
+import { site, services } from "@/lib/site";
+
+/**
+ * schema.org structured data (JSON-LD) — makes the business machine-readable
+ * for Google rich results and AI assistants.
+ */
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Electrician",
+  "@id": `${site.url}/#business`,
+  name: site.fullName,
+  alternateName: site.name,
+  slogan: site.tagline,
+  description: site.description,
+  url: site.url,
+  telephone: site.phoneInternational,
+  email: site.email,
+  image: `${site.url}/images/logo.png`,
+  logo: `${site.url}/images/logo.png`,
+  founder: { "@type": "Person", name: site.founder },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "10 Camberely Crescent, Buh Rein Estate",
+    addressLocality: site.address.city,
+    addressRegion: site.address.province,
+    postalCode: site.address.postal,
+    addressCountry: "ZA",
+  },
+  areaServed: { "@type": "City", name: "Cape Town" },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Electrical & Energy Services",
+    itemListElement: services.map((s) => ({
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: s.title,
+        url: `${site.url}/services/#${s.slug}`,
+      },
+    })),
+  },
+};
 
 const montserrat = Montserrat({
   variable: "--font-heading",
@@ -70,6 +111,10 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        />
         <Navbar />
         <main id="main-content" className="flex-1">
           {children}
