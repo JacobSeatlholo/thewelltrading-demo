@@ -59,13 +59,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-ZA" className="dark" data-scroll-behavior="smooth">
+    <html lang="en-ZA" data-scroll-behavior="smooth">
       <body
-        className={`${montserrat.variable} ${inter.variable} flex min-h-screen flex-col bg-ink font-sans`}
+        className={`${montserrat.variable} ${inter.variable} flex min-h-screen flex-col bg-white font-sans text-navy-ink`}
       >
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-volt focus:px-4 focus:py-2 focus:font-bold focus:text-ink"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-navy focus:px-4 focus:py-2 focus:font-bold focus:text-white"
         >
           Skip to content
         </a>

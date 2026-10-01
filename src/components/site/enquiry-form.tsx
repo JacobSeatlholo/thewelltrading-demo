@@ -23,7 +23,7 @@ const initial: FormState = {
 };
 
 const inputClass =
-  "w-full rounded-xl border border-input bg-ink/60 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none transition focus:border-volt/60 focus:ring-2 focus:ring-ring/40";
+  "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-navy-ink placeholder:text-slate-400 outline-none transition focus:border-navy/60 focus:ring-2 focus:ring-navy/15";
 
 export function EnquiryForm() {
   const [form, setForm] = useState<FormState>(initial);
@@ -79,8 +79,8 @@ export function EnquiryForm() {
     <form onSubmit={submitEmail} noValidate className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="firstName" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">
-            First name <span className="text-amber-glow">*</span>
+          <label htmlFor="firstName" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-600">
+            First name <span className="text-scarlet">*</span>
           </label>
           <input
             id="firstName"
@@ -91,10 +91,10 @@ export function EnquiryForm() {
             onChange={(e) => set("firstName")(e.target.value)}
             className={inputClass}
           />
-          {errors.firstName && <p className="mt-1.5 text-xs text-red-400">{errors.firstName}</p>}
+          {errors.firstName && <p className="mt-1.5 text-xs text-red-600">{errors.firstName}</p>}
         </div>
         <div>
-          <label htmlFor="lastName" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">
+          <label htmlFor="lastName" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-600">
             Last name
           </label>
           <input
@@ -111,7 +111,7 @@ export function EnquiryForm() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="phone" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">
+          <label htmlFor="phone" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-600">
             Phone number
           </label>
           <input
@@ -125,7 +125,7 @@ export function EnquiryForm() {
           />
         </div>
         <div>
-          <label htmlFor="email" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">
+          <label htmlFor="email" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-600">
             Email address
           </label>
           <input
@@ -137,12 +137,12 @@ export function EnquiryForm() {
             onChange={(e) => set("email")(e.target.value)}
             className={inputClass}
           />
-          {errors.email && <p className="mt-1.5 text-xs text-red-400">{errors.email}</p>}
+          {errors.email && <p className="mt-1.5 text-xs text-red-600">{errors.email}</p>}
         </div>
       </div>
 
       <div>
-        <label htmlFor="service" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">
+        <label htmlFor="service" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-600">
           Service required
         </label>
         <select
@@ -162,8 +162,8 @@ export function EnquiryForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-400">
-          Message <span className="text-amber-glow">*</span>
+        <label htmlFor="message" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-600">
+          Message <span className="text-scarlet">*</span>
         </label>
         <textarea
           id="message"
@@ -173,13 +173,13 @@ export function EnquiryForm() {
           onChange={(e) => set("message")(e.target.value)}
           className={`${inputClass} resize-y`}
         />
-        {errors.message && <p className="mt-1.5 text-xs text-red-400">{errors.message}</p>}
+        {errors.message && <p className="mt-1.5 text-xs text-red-600">{errors.message}</p>}
       </div>
 
       <div className="flex flex-col gap-3 pt-2 sm:flex-row">
         <button
           type="submit"
-          className="glow-amber inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 px-7 py-4 font-bold text-ink transition hover:brightness-110"
+          className="glow-leaf inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-leaf px-7 py-4 font-bold text-white transition hover:bg-leaf-deep"
         >
           <Send className="h-4.5 w-4.5" aria-hidden />
           Send Enquiry
@@ -187,7 +187,7 @@ export function EnquiryForm() {
         <button
           type="button"
           onClick={submitWhatsApp}
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-[#25D366]/50 bg-[#25D366]/10 px-7 py-4 font-bold text-[#4be389] transition hover:bg-[#25D366]/20"
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-[#25D366]/50 bg-[#25D366]/10 px-7 py-4 font-bold text-[#128C4A] transition hover:bg-[#25D366]/20"
         >
           <MessageCircle className="h-4.5 w-4.5" aria-hidden />
           Send via WhatsApp
@@ -203,7 +203,7 @@ export function EnquiryForm() {
       {sent && (
         <p
           role="status"
-          className="rounded-xl border border-volt/30 bg-volt/10 px-4 py-3 text-sm font-semibold text-volt-soft"
+          className="rounded-xl border border-leaf/40 bg-leaf/10 px-4 py-3 text-sm font-semibold text-leaf-deep"
         >
           {sent === "email"
             ? "Your email app is opening with your enquiry — just press send and we'll get back to you shortly."

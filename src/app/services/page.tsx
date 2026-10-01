@@ -36,7 +36,7 @@ export default function ServicesPage() {
               <Reveal key={s.slug} delay={0.05}>
                 <article
                   id={s.slug}
-                  className="card-hover scroll-mt-32 overflow-hidden rounded-3xl border border-white/8 bg-panel"
+                  className="card-hover scroll-mt-32 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_14px_44px_-28px_rgba(0,37,129,0.3)]"
                 >
                   <div
                     className={`grid lg:grid-cols-[0.9fr_1.1fr] ${
@@ -52,19 +52,19 @@ export default function ServicesPage() {
                           sizes="(max-width: 1024px) 100vw, 45vw"
                           className="object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-panel/95 via-panel/30 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-panel/20 lg:to-panel/90" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/30 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-white/20 lg:to-white/90" />
                       </div>
                     ) : (
-                      <div className="relative flex min-h-56 items-center justify-center overflow-hidden bg-grid lg:min-h-full">
+                      <div className="relative flex min-h-56 items-center justify-center overflow-hidden bg-paper-soft bg-grid lg:min-h-full">
                         <div
                           aria-hidden
                           className="absolute inset-0"
                           style={{
                             background:
-                              "radial-gradient(420px 260px at 50% 40%, rgba(56,189,248,0.14), transparent 70%)",
+                              "radial-gradient(420px 260px at 50% 40%, rgba(0,37,129,0.10), transparent 70%)",
                           }}
                         />
-                        <span className="relative inline-flex h-24 w-24 items-center justify-center rounded-3xl border border-volt/25 bg-volt/10 text-volt shadow-[0_0_60px_-12px_rgba(56,189,248,0.8)]">
+                        <span className="relative inline-flex h-24 w-24 items-center justify-center rounded-3xl border border-navy/15 bg-white text-navy shadow-[0_18px_50px_-20px_rgba(0,37,129,0.4)]">
                           <ServiceIcon name={s.icon} className="h-12 w-12" />
                         </span>
                       </div>
@@ -72,25 +72,25 @@ export default function ServicesPage() {
 
                     <div className="p-7 sm:p-10">
                       <div className="flex items-center gap-3">
-                        <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-volt/25 bg-volt/10 text-volt lg:hidden">
+                        <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-navy/15 bg-navy/5 text-navy lg:hidden">
                           <ServiceIcon name={s.icon} className="h-5.5 w-5.5" />
                         </span>
-                        <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl">
+                        <h2 className="font-heading text-2xl font-extrabold text-navy-ink sm:text-3xl">
                           {s.title}
                         </h2>
                       </div>
-                      <p className="mt-4 leading-relaxed text-slate-400">{s.description}</p>
+                      <p className="mt-4 leading-relaxed text-slate-600">{s.description}</p>
                       <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
                         {s.points.map((pt) => (
-                          <li key={pt} className="flex items-start gap-2.5 text-sm text-slate-300">
-                            <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 shrink-0 text-volt" aria-hidden />
+                          <li key={pt} className="flex items-start gap-2.5 text-sm text-slate-600">
+                            <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 shrink-0 text-leaf-deep" aria-hidden />
                             {pt}
                           </li>
                         ))}
                       </ul>
                       <Link
                         href="/contact/"
-                        className="mt-7 inline-flex items-center gap-2 rounded-xl border border-volt/40 bg-volt/10 px-6 py-3 text-sm font-bold text-volt-soft transition hover:bg-volt/20"
+                        className="mt-7 inline-flex items-center gap-2 rounded-xl border border-navy/20 bg-paper-soft px-6 py-3 text-sm font-bold text-navy transition hover:bg-navy/5 hover:text-navy"
                       >
                         Enquire about this service
                         <ArrowRight className="h-4 w-4" aria-hidden />
@@ -105,7 +105,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Process */}
-      <section className="border-y border-white/5 bg-ink-soft py-20 sm:py-24">
+      <section className="border-y border-slate-200 bg-paper-soft py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading
             eyebrow="How it works"
@@ -115,15 +115,15 @@ export default function ServicesPage() {
           <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {processSteps.map((p, i) => (
               <Reveal key={p.step} delay={i * 0.08}>
-                <div className="card-hover relative h-full rounded-2xl border border-white/8 bg-panel p-7">
-                  <span className="font-heading text-4xl font-extrabold text-volt/25">
+                <div className="card-hover relative h-full rounded-2xl border border-slate-200 bg-white p-7">
+                  <span className="font-heading text-4xl font-extrabold text-navy/15">
                     {p.step}
                   </span>
-                  <h3 className="mt-3 font-heading text-lg font-bold text-white">{p.title}</h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-slate-400">{p.text}</p>
+                  <h3 className="mt-3 font-heading text-lg font-bold text-navy-ink">{p.title}</h3>
+                  <p className="mt-2.5 text-sm leading-relaxed text-slate-600">{p.text}</p>
                   {i < processSteps.length - 1 && (
                     <ArrowRight
-                      className="absolute -right-3.5 top-1/2 hidden h-6 w-6 -translate-y-1/2 text-volt/40 lg:block"
+                      className="absolute -right-3.5 top-1/2 hidden h-6 w-6 -translate-y-1/2 text-leaf lg:block"
                       aria-hidden
                     />
                   )}

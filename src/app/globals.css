@@ -38,11 +38,13 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --color-volt: var(--volt);
-  --color-volt-soft: var(--volt-soft);
-  --color-amber-glow: var(--amber-glow);
-  --color-ink: var(--ink);
-  --color-ink-soft: var(--ink-soft);
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-navy-ink: var(--navy-ink);
+  --color-leaf: var(--leaf);
+  --color-leaf-deep: var(--leaf-deep);
+  --color-scarlet: var(--scarlet);
+  --color-paper-soft: var(--paper-soft);
   --color-panel: var(--panel);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -51,72 +53,56 @@
 }
 
 /*
- * "Dark Electric" brand palette
- * ink  = deep navy/near-black base
- * volt = electric blue accent
- * amber-glow = amber CTA accent
+ * "The Well" brand palette — lifted from thewelltrading.co.za
+ * (Elementor kit: navy #002581, green #8ABB2A, red #E50019, Montserrat)
+ * Light theme: white paper, navy structure, green CTAs, red icon accents.
  */
 :root {
   --radius: 0.75rem;
-  --ink: #05080f;
-  --ink-soft: #0b1120;
-  --panel: #0e1526;
-  --volt: #38bdf8;
-  --volt-soft: #7dd3fc;
-  --amber-glow: #fbbf24;
 
-  --background: #05080f;
-  --foreground: #eef2f8;
-  --card: #0c1322;
-  --card-foreground: #eef2f8;
-  --popover: #0e1526;
-  --popover-foreground: #eef2f8;
-  --primary: #38bdf8;
-  --primary-foreground: #05080f;
-  --secondary: #131c31;
-  --secondary-foreground: #eef2f8;
-  --muted: #131c31;
-  --muted-foreground: #94a3b8;
-  --accent: #131c31;
-  --accent-foreground: #eef2f8;
-  --destructive: #ef4444;
-  --border: rgba(125, 211, 252, 0.14);
-  --input: rgba(125, 211, 252, 0.18);
-  --ring: rgba(56, 189, 248, 0.55);
-  --chart-1: #38bdf8;
-  --chart-2: #fbbf24;
-  --chart-3: #34d399;
-  --chart-4: #a78bfa;
-  --chart-5: #fb7185;
-  --sidebar: #0b1120;
-  --sidebar-foreground: #eef2f8;
-  --sidebar-primary: #38bdf8;
-  --sidebar-primary-foreground: #05080f;
-  --sidebar-accent: #131c31;
-  --sidebar-accent-foreground: #eef2f8;
-  --sidebar-border: rgba(125, 211, 252, 0.14);
-  --sidebar-ring: rgba(56, 189, 248, 0.55);
-}
+  /* brand */
+  --navy: #002581;
+  --navy-deep: #00164f;
+  --navy-ink: #101c3f;
+  --leaf: #8abb2a;
+  --leaf-deep: #71a01f;
+  --scarlet: #e50019;
 
-.dark {
-  --background: #05080f;
-  --foreground: #eef2f8;
-  --card: #0c1322;
-  --card-foreground: #eef2f8;
-  --popover: #0e1526;
-  --popover-foreground: #eef2f8;
-  --primary: #38bdf8;
-  --primary-foreground: #05080f;
-  --secondary: #131c31;
-  --secondary-foreground: #eef2f8;
-  --muted: #131c31;
-  --muted-foreground: #94a3b8;
-  --accent: #131c31;
-  --accent-foreground: #eef2f8;
-  --destructive: #ef4444;
-  --border: rgba(125, 211, 252, 0.14);
-  --input: rgba(125, 211, 252, 0.18);
-  --ring: rgba(56, 189, 248, 0.55);
+  /* surfaces */
+  --paper-soft: #f2f5fa;
+  --panel: #ffffff;
+
+  --background: #ffffff;
+  --foreground: #101c3f;
+  --card: #ffffff;
+  --card-foreground: #101c3f;
+  --popover: #ffffff;
+  --popover-foreground: #101c3f;
+  --primary: #002581;
+  --primary-foreground: #ffffff;
+  --secondary: #eef2f9;
+  --secondary-foreground: #101c3f;
+  --muted: #eef2f9;
+  --muted-foreground: #54595f;
+  --accent: #eef2f9;
+  --accent-foreground: #101c3f;
+  --destructive: #e50019;
+  --border: #e2e8f0;
+  --input: #cbd5e1;
+  --ring: rgba(0, 37, 129, 0.35);
+  --chart-1: #002581;
+  --chart-2: #8abb2a;
+  --chart-3: #e50019;
+  --chart-4: #1d63d8;
+  --chart-5: #f2b31c;
+  --sidebar: #f2f5fa;
+  --sidebar-foreground: #101c3f;
+  --sidebar-primary: #002581;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef2f9;
+  --sidebar-accent-foreground: #101c3f;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: rgba(0, 37, 129, 0.35);
 }
 
 @layer base {
@@ -130,8 +116,8 @@
     @apply bg-background text-foreground antialiased;
   }
   ::selection {
-    background: rgba(56, 189, 248, 0.35);
-    color: #f8fafc;
+    background: #002581;
+    color: #ffffff;
   }
 }
 
@@ -140,31 +126,48 @@
     font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
   }
 
-  /* Subtle electric grid backdrop */
+  /* Subtle blueprint grid on light surfaces */
   .bg-grid {
     background-image:
-      linear-gradient(to right, rgba(125, 211, 252, 0.055) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(125, 211, 252, 0.055) 1px, transparent 1px);
+      linear-gradient(to right, rgba(0, 37, 129, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 37, 129, 0.05) 1px, transparent 1px);
     background-size: 44px 44px;
   }
 
-  .text-gradient-volt {
-    background: linear-gradient(100deg, #7dd3fc 0%, #38bdf8 45%, #fbbf24 100%);
+  /* Same grid, white lines — for navy hero / CTA panels */
+  .bg-grid-light {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  /* Navy → electric blue → leaf, for highlighted words on light backgrounds */
+  .text-gradient-brand {
+    background: linear-gradient(100deg, #002581 0%, #1d63d8 55%, #71a01f 115%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
-  .glow-volt {
-    box-shadow:
-      0 0 0 1px rgba(56, 189, 248, 0.25),
-      0 10px 40px -8px rgba(56, 189, 248, 0.35);
+  /* White → ice blue → light leaf, for highlighted words on navy backgrounds */
+  .text-gradient-light {
+    background: linear-gradient(100deg, #ffffff 0%, #c9dcff 55%, #d9efae 115%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
-  .glow-amber {
+  .glow-navy {
     box-shadow:
-      0 0 0 1px rgba(251, 191, 36, 0.35),
-      0 12px 44px -10px rgba(251, 191, 36, 0.5);
+      0 0 0 1px rgba(0, 37, 129, 0.08),
+      0 14px 44px -14px rgba(0, 37, 129, 0.25);
+  }
+
+  .glow-leaf {
+    box-shadow:
+      0 0 0 1px rgba(138, 187, 42, 0.35),
+      0 12px 40px -10px rgba(138, 187, 42, 0.55);
   }
 
   .card-hover {
@@ -175,8 +178,8 @@
   }
   .card-hover:hover {
     transform: translateY(-4px);
-    border-color: rgba(56, 189, 248, 0.45);
-    box-shadow: 0 18px 50px -18px rgba(56, 189, 248, 0.35);
+    border-color: rgba(0, 37, 129, 0.28);
+    box-shadow: 0 18px 44px -18px rgba(0, 37, 129, 0.22);
   }
 
   /* Thin branded scrollbar */
@@ -185,15 +188,15 @@
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #070b14;
+    background: #eef1f6;
   }
   ::-webkit-scrollbar-thumb {
-    background: #1b2a44;
+    background: #c3cdda;
     border-radius: 8px;
-    border: 2px solid #070b14;
+    border: 2px solid #eef1f6;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #2b3f63;
+    background: #96aac6;
   }
 }
 
@@ -209,7 +212,7 @@
   }
 }
 
-@keyframes volt-flicker {
+@keyframes brand-flicker {
   0%, 100% {
     opacity: 1;
   }
@@ -234,6 +237,6 @@
   animation: pulse-ring 2.4s infinite;
 }
 
-.animate-volt-flicker {
-  animation: volt-flicker 6s linear infinite;
+.animate-brand-flicker {
+  animation: brand-flicker 6s linear infinite;
 }

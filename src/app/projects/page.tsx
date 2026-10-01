@@ -45,13 +45,13 @@ export default function ProjectsPage() {
             },
           ].map((f, i) => (
             <Reveal key={f.title} delay={i * 0.08}>
-              <div className="card-hover flex h-full items-start gap-4 rounded-2xl border border-white/8 bg-panel p-6">
-                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-volt/25 bg-volt/10 text-volt">
+              <div className="card-hover flex h-full items-start gap-4 rounded-2xl border border-slate-200 bg-white p-6">
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-navy/15 bg-navy/5 text-navy">
                   <f.icon className="h-5.5 w-5.5" aria-hidden />
                 </span>
                 <div>
-                  <h2 className="font-heading text-base font-bold text-white">{f.title}</h2>
-                  <p className="mt-1 text-sm text-slate-400">{f.text}</p>
+                  <h2 className="font-heading text-base font-bold text-navy-ink">{f.title}</h2>
+                  <p className="mt-1 text-sm text-slate-600">{f.text}</p>
                 </div>
               </div>
             </Reveal>
@@ -65,7 +65,7 @@ export default function ProjectsPage() {
           <div className="columns-2 gap-4 sm:columns-3 lg:columns-4 [&>*]:mb-4">
             {projectPhotos.map((p, i) => (
               <Reveal key={p.src} delay={(i % 4) * 0.05} className="break-inside-avoid">
-                <figure className="group relative overflow-hidden rounded-xl border border-white/8">
+                <figure className="group relative overflow-hidden rounded-xl border border-slate-200 bg-paper-soft">
                   <Image
                     src={p.src}
                     alt={p.alt}
@@ -74,7 +74,7 @@ export default function ProjectsPage() {
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <figcaption className="absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-ink/95 to-transparent p-4 pt-10 text-xs font-semibold text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                  <figcaption className="absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-navy-deep/95 to-transparent p-4 pt-10 text-xs font-semibold text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                     {p.alt}
                   </figcaption>
                 </figure>

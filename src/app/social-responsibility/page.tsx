@@ -69,29 +69,29 @@ export default function SocialResponsibilityPage() {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <Reveal>
-            <div className="rounded-3xl border border-volt/20 bg-panel p-8 sm:p-12">
-              <p className="font-heading text-xl font-bold leading-relaxed text-white sm:text-2xl">
+            <div className="rounded-3xl border border-navy/15 bg-white p-8 shadow-[0_14px_44px_-28px_rgba(0,37,129,0.3)] sm:p-12">
+              <p className="font-heading text-xl font-bold leading-relaxed text-navy-ink sm:text-2xl">
                 &ldquo;Skills development in electrical engineering has made an impact
                 and changed people&apos;s lives.&rdquo;
               </p>
-              <p className="mt-6 leading-relaxed text-slate-400">
+              <p className="mt-6 leading-relaxed text-slate-600">
                 The desire to be involved with the underprivileged was not just a
                 government calling being adhered to. The Well Electrical has a very
                 real passion to help and empower the less fortunate — and that
                 conviction resulted in the founding of our{" "}
-                <span className="font-semibold text-volt-soft">
+                <span className="font-semibold text-leaf-deep">
                   skills training programme
                 </span>
                 .
               </p>
-              <p className="mt-4 leading-relaxed text-slate-400">
+              <p className="mt-4 leading-relaxed text-slate-600">
                 We take individuals who have never been in the electrical field and
                 train them from the ground up: learning the tools, the equipment and
                 the safety, right through to doing the job under supervision until
                 they are qualified electricians. It is a platform where we give back
                 to every community we come into contact with — and it works.
               </p>
-              <p className="mt-4 leading-relaxed text-slate-400">
+              <p className="mt-4 leading-relaxed text-slate-600">
                 Beyond training, we are growing our involvement in community
                 programmes — from sports days and school uniforms to housing support
                 and empowering child-headed homes to further their studies.
@@ -102,7 +102,7 @@ export default function SocialResponsibilityPage() {
       </section>
 
       {/* Initiatives */}
-      <section className="border-y border-white/5 bg-ink-soft py-20 sm:py-24">
+      <section className="border-y border-slate-200 bg-paper-soft py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading
             eyebrow="Our commitments"
@@ -112,14 +112,14 @@ export default function SocialResponsibilityPage() {
           <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {initiatives.map((item, i) => (
               <Reveal key={item.title} delay={(i % 3) * 0.08}>
-                <div className="card-hover group h-full rounded-2xl border border-white/8 bg-panel p-7">
-                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-amber-glow/25 bg-amber-glow/10 text-amber-glow transition group-hover:shadow-[0_0_24px_-4px_rgba(251,191,36,0.7)]">
+                <div className="card-hover group h-full rounded-2xl border border-slate-200 bg-white p-7">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-leaf/25 bg-leaf/10 text-leaf-deep transition group-hover:shadow-[0_0_24px_-6px_rgba(138,187,42,0.6)]">
                     <item.icon className="h-6 w-6" aria-hidden />
                   </span>
-                  <h3 className="mt-5 font-heading text-lg font-bold text-white">
+                  <h3 className="mt-5 font-heading text-lg font-bold text-navy-ink">
                     {item.title}
                   </h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-slate-400">{item.text}</p>
+                  <p className="mt-2.5 text-sm leading-relaxed text-slate-600">{item.text}</p>
                 </div>
               </Reveal>
             ))}
@@ -128,7 +128,7 @@ export default function SocialResponsibilityPage() {
             <div className="mt-12 text-center">
               <Link
                 href="/contact/"
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 px-8 py-4 font-bold text-ink transition hover:brightness-110"
+                className="inline-flex items-center gap-2 rounded-xl bg-leaf px-8 py-4 font-bold text-white shadow-[0_10px_30px_-12px_rgba(138,187,42,0.8)] transition hover:bg-leaf-deep"
               >
                 Partner With Us
                 <ArrowRight className="h-4.5 w-4.5" aria-hidden />
